@@ -15,7 +15,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
             + "(:title IS NULL OR r.title LIKE %:title%) "
             + "AND (:cuisine IS NULL OR r.cuisine = :cuisine) "
             + "AND (:rating IS NULL OR r.rating >= :rating) "  // Example for >=, adjust for operators
-            + "AND (:totalTime IS NULL OR r.totalTime <= :totalTime)")  // Adjust operators as needed
+            + "AND (:totalTime IS NULL OR r.totalTime <= :totalTime)"
+            + AND (:calories IS NULL OR JSON_EXTRACT(r.nutrients, '$.calories') <= :calories))  // Parse and compare  )  // Adjust operators as needed
     List<Recipe> searchRecipes(@Param("title") String title, @Param("cuisine") String cuisine,
                                @Param("rating") Float rating, @Param("totalTime") Integer totalTime);
     // Add more for calories (parse nutrients JSON if needed, e.g., using JSON_EXTRACT in query)
